@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TASM 1.0.0 Docs | Tutorial</title>
+    <style>
+        th, td {
+            border: 1px solid black;
+        }
+        th {
+            background-color: #ccc;
+        }
+        td {
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <h1>The TASM compiler</h1>
+    <p>
+        something something
+    </p>
+    <h2>Dependencies</h2>
+    <p>
+        <code>tasmc</code> depends on a number of packages. To use the bootstrapper the developer will need nodejs
+        version 14 or above in order to 
+    </p>
+    <h2>Using the compiler</h2>
+    <p>
+        The TASM compiler is typically installed as <code>/usr/bin/tasmc</code>, which allows the user to
+        execute <code>tasmc</code>, whereever they are. <code>tasmc</code> takes two arguments, the source file
+        (typically a file ending in <code>.tasm</code>) and an output file (typically a file without any file extension).
+        <pre>
+$ tasmc my_source_code.tasm my_binary
+        </pre>
+    </p>
+    <h1>Introduction to TASM</h1>
+    <p>
+        TASM is a compiled language, which produces statically linked ELF64 binaries for linux using NASM.
+        The language uses a stack oriented syntax similar to Forth.
+    </p>
+    <h2>The <code>main</code> submarine</h2>
+    <p>
+        The main submarine is the entrypoint for any TASM program. Without the main submarine the program will not compile.
+        
+        <pre>
+sub main
+    your code here...
+marine
+        </pre>
+        This submarine will be executed at the start of the program, and will automatically exit with exit-code 0
+        if the stack is properly cleaned.
+    </p>
+    <h2>Numbers</h2>
+    <p>
+        TASM only has direct support for unsigned 64-bit integers, which means that operations such as addition, modulus and multiplication
+        is fully supported while operations like division and subtraction is only partially supported. For instance, the 
+        division operation in the <code>std.math</code> module acts as a floor division similar to the python 
+        instraction <code>17 // 3 # results in 5</code>.
+    </p>
+    <p>
+        A large part of a TASM program consists of push numbers to the stack in order to do math, access specific syscalls or
+        apply offsets to a value. Numbers can be pushed to the stack by simply typing out the number:
+    </p>
+    <pre>
+sub main
+    14
+marine
+    </pre>
+    <p>
+        After this instruction the stack will look like this:
+    </p>
+    <table>
+        <thead><tr><th>Top of stack</th></tr></thead>
+        <tr><td>14</td></tr>
+        <tr><td>&lt;returnptr&gt;</td></tr>
+        <tfoot><tr><th>Bottom of stack</th></tr></tfoot>
+    </table>
+    <p>
+        In order to avoid an error during runtime the number 14 has to be consumed somehow. If it is not consumed then the
+        number will be used as the return address of the submarine, which will result in a segfault. One way to
+        consume the number is to <code>put</code> it, which outputs the top element on the stack and removes it. 
+    </p>
+    <pre>
+sub main
+    14 put
+marine
+    </pre>
+    <p>
+        This will result in <code>14</code> being printed to stdout and the program exiting with code 0.
+    </p>
+</body>
+</html>
