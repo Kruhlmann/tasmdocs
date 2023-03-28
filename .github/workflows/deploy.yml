@@ -15,13 +15,13 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
     - name: Build and tag Docker image
       run: |
-        docker build -t tasmdocs:${{ github.sha }} .
-        docker tag tasmdocs:${{ github.sha }} tasmdocs:latest
+        docker build -t kruhlmann/tasmdocs:${{ github.sha }} .
+        docker tag kruhlmann/tasmdocs:${{ github.sha }} kruhlmann/tasmdocs:latest
     - name: Push Docker image to Docker Hub
       uses: docker/build-push-action@v2
       with:
         context: .
         push: true
         tags: |
-          tasmdocs:${{ github.sha }}
-          tasmdocs:latest
+          kruhlmann/tasmdocs:${{ github.sha }}
+          kruhlmann/tasmdocs:latest
